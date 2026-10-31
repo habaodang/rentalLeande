@@ -1,10 +1,10 @@
-package org.baodang.rentalmanamentapi;
+package org.baodang.rentalleandeapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RentalManamentApiApplicationTests {
+class RentalLeandeApiApplicationTests {
 
     @Test
     void contextLoads() {
