@@ -11,11 +11,20 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 255)
+    @Column(name = "email", length = 255)
     private String email;
 
     @Column(name = "password_hash", length = 255)
-    private String password_hash;
+    private String passwordHash;
+
+    @Column(name = "status", length = 50)
+    private String status;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
@@ -33,12 +42,12 @@ public class Account {
         this.email = email;
     }
 
-    public String getPassword_hash() {
-        return password_hash;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getStatus() {
@@ -49,29 +58,19 @@ public class Account {
         this.status = status;
     }
 
-    public LocalDateTime getCreate_at() {
-        return create_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreate_at(LocalDateTime create_at) {
-        this.create_at = create_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdate_at() {
-        return update_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdate_at(LocalDateTime update_at) {
-        this.update_at = update_at;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
-
-    @Column(name = "status", length = 50)
-    private String status;
-
-    @Column(name = "created_at")
-    private LocalDateTime create_at;
-
-    @Column(name = "update_at")
-    private LocalDateTime update_at;
-
 }
