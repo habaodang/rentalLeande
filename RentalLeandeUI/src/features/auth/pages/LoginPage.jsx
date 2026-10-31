@@ -3,9 +3,9 @@ import styles from "./LoginPage.module.css";
 import logo from "../../../assets/logo.png";
 
 export default function LoginPage() {
-  const [showPassword,  setShowPassword] = useState(false);
-
-  function handleSubmit(event) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -16,21 +16,37 @@ export default function LoginPage() {
       rememberMe: formData.get("rememberMe") === "on",
     };
 
-    // Gọi API đăng nhập với loginData tại đây.
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: loginData.email,
+          password: loginData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        setMessage(`Đăng nhập thất bại (${response.status})`);
+        return;
+      }
+
+      const account = await response.json();
+      console.log("Dữ liệu BE trả về:", account);
+      setMessage("Đăng nhập thành công!");
+    } catch (error) {
+      console.error(error);
+      setMessage("Không thể kết nối đến máy chủ.");
+    }
   }
 
   return (
     <main className={styles.mainContainer}>
-      <section
-        className={styles.containerForm}
-        aria-labelledby="login-title"
-      >
+      <section className={styles.containerForm} aria-labelledby="login-title">
         <header className={styles.formHeader}>
-            <img
-          className={styles.logo}
-          src={logo}
-          alt="iLeande"
-        />
+          <img className={styles.logo} src={logo} alt="iLeande" />
           <h1 id="login-title">Chào mừng đến với Trọ Ấm</h1>
 
           <p>Đăng nhập để tiếp tục quản lý nhà trọ của bạn.</p>
@@ -75,9 +91,7 @@ export default function LoginPage() {
                 onClick={() => setShowPassword(!showPassword)}
                 aria-controls="password"
                 aria-pressed={showPassword}
-                aria-label={
-                  showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"
-                }
+                aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
               >
                 {showPassword ? "Ẩn" : "Hiện"}
               </button>
@@ -86,18 +100,11 @@ export default function LoginPage() {
 
           <div className={styles.formOptions}>
             <label className={styles.rememberMe}>
-              <input
-                name="rememberMe"
-                type="checkbox"
-                defaultChecked
-              />
+              <input name="rememberMe" type="checkbox" defaultChecked />
               <span>Ghi nhớ đăng nhập</span>
             </label>
 
-            <a
-              className={styles.forgotPassword}
-              href="/forgot-password"
-            >
+            <a className={styles.forgotPassword} href="/forgot-password">
               Quên mật khẩu?
             </a>
           </div>
@@ -112,10 +119,7 @@ export default function LoginPage() {
 
         <footer className={styles.formFooter}>
           <p>Các tài khoản do chủ trọ mời cho người thuê.</p>
-          <p>
-            Sử dụng chung một hệ thống, đăng nhập theo vai trò
-            được cấp.
-          </p>
+          <p>Sử dụng chung một hệ thống, đăng nhập theo vai trò được cấp.</p>
         </footer>
       </section>
     </main>
